@@ -183,6 +183,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Supporting RTSSS and Recursive Rendering in the render graph mode.
 - Supporting directional RT and screen space shadow for render graph.
 - Supporting SSGI in the render graph mode.
+- Improving SSGI Filtering and fixing a blend issue with RTGI.
 
 ### Fixed
 - Fix when rescale probe all direction below zero (1219246)
