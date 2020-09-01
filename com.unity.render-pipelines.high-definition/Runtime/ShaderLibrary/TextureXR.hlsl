@@ -4,11 +4,16 @@
 // single-pass instancing is the default VR method for HDRP
 // multi-pass is working but not recommended due to lower performance
 // single-pass multi-view is not yet supported
-// single-pass doule-wide is deprecated
+// single-pass double-wide is deprecated
 
 // Must be in sync with C# with property useTexArray in TextureXR.cs
 #if (defined(SHADER_API_D3D11) && !defined(SHADER_API_XBOXONE)) || defined(SHADER_API_PSSL) || defined(SHADER_API_VULKAN)
     #define UNITY_TEXTURE2D_X_ARRAY_SUPPORTED
+#endif
+
+// Must be in sync with C# with property useTexArray in TextureXR.cs
+#if (defined(SHADER_API_METAL))
+    #define UNITY_TEXTURE2D_X_ARRAY_SUPPORTED_NO_SPI
 #endif
 
 // Validate supported platforms
@@ -21,7 +26,7 @@
 #endif
 
 // Control if TEXTURE2D_X macros will expand to texture arrays
-#if defined(UNITY_TEXTURE2D_X_ARRAY_SUPPORTED) && !defined(DISABLE_TEXTURE2D_X_ARRAY)
+#if (defined(UNITY_TEXTURE2D_X_ARRAY_SUPPORTED) || defined(UNITY_TEXTURE2D_X_ARRAY_SUPPORTED_NO_SPI)) && !defined(DISABLE_TEXTURE2D_X_ARRAY)
     #define USE_TEXTURE2D_X_AS_ARRAY
 #endif
 

@@ -42,6 +42,11 @@ namespace UnityEngine.Rendering
                     case GraphicsDeviceType.Vulkan:
                         return true;
 
+                    // VFX basically depends on texture arrays, so TextureXR should be enabled even on platforms without SPI support
+                    // SPI technically available on Metal, but due to fragmented OS/GPU matrix, let's not enable it yet
+                    case GraphicsDeviceType.Metal:
+                        return true;
+
                     default:
                         return false;
                 }
