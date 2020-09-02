@@ -68,12 +68,9 @@
     #define TEXTURE2D_X_UINT(textureName)                                    Texture2DArray<uint> textureName
     #define TEXTURE2D_X_UINT2(textureName)                                   Texture2DArray<uint2> textureName
     #define TEXTURE2D_X_UINT4(textureName)                                   Texture2DArray<uint4> textureName
-    //Using explicit sample count of 1 to force DXC to actually reflect the texture as MS. The actual count appears to be irrelevant and any 2D MS texture array should bind to it
-    #define TEXTURE2D_X_MSAA(type, textureName)                              Texture2DMSArray<type, 1> textureName
 
     #define RW_TEXTURE2D_X(type, textureName)                                RW_TEXTURE2D_ARRAY(type, textureName)
     #define LOAD_TEXTURE2D_X(textureName, unCoord2)                          LOAD_TEXTURE2D_ARRAY(textureName, unCoord2, SLICE_ARRAY_INDEX)
-    #define LOAD_TEXTURE2D_X_MSAA(textureName, unCoord2, sampleIndex)        LOAD_TEXTURE2D_ARRAY_MSAA(textureName, unCoord2, SLICE_ARRAY_INDEX, sampleIndex)
     #define LOAD_TEXTURE2D_X_LOD(textureName, unCoord2, lod)                 LOAD_TEXTURE2D_ARRAY_LOD(textureName, unCoord2, SLICE_ARRAY_INDEX, lod)
     #define SAMPLE_TEXTURE2D_X(textureName, samplerName, coord2)             SAMPLE_TEXTURE2D_ARRAY(textureName, samplerName, coord2, SLICE_ARRAY_INDEX)
     #define SAMPLE_TEXTURE2D_X_LOD(textureName, samplerName, coord2, lod)    SAMPLE_TEXTURE2D_ARRAY_LOD(textureName, samplerName, coord2, SLICE_ARRAY_INDEX, lod)
@@ -96,12 +93,9 @@
     #define TEXTURE2D_X_UINT(textureName)                                    Texture2D<uint> textureName
     #define TEXTURE2D_X_UINT2(textureName)                                   Texture2D<uint2> textureName
     #define TEXTURE2D_X_UINT4(textureName)                                   Texture2D<uint4> textureName
-    //Using explicit sample count of 1 to force DXC to actually reflect the texture as MS. The actual count appears to be irrelevant and any 2D MS texture should bind to it
-    #define TEXTURE2D_X_MSAA(type, textureName)                              Texture2DMS<type, 1> textureName
 
     #define RW_TEXTURE2D_X                                                   RW_TEXTURE2D
     #define LOAD_TEXTURE2D_X                                                 LOAD_TEXTURE2D
-    #define LOAD_TEXTURE2D_X_MSAA                                            LOAD_TEXTURE2D_MSAA
     #define LOAD_TEXTURE2D_X_LOD                                             LOAD_TEXTURE2D_LOD
     #define SAMPLE_TEXTURE2D_X                                               SAMPLE_TEXTURE2D
     #define SAMPLE_TEXTURE2D_X_LOD                                           SAMPLE_TEXTURE2D_LOD
@@ -110,6 +104,16 @@
     #define GATHER_GREEN_TEXTURE2D_X                                         GATHER_GREEN_TEXTURE2D
     #define GATHER_BLUE_TEXTURE2D_X                                          GATHER_BLUE_TEXTURE2D
     #define GATHER_ALPHA_TEXTURE2D_X                                         GATHER_ALPHA_TEXTURE2D
+#endif
+
+// Must be in sync with C# with property useTexArrayMSAA in TextureXR.cs
+// Using explicit sample count of 1 to force DXC to actually reflect the texture as MS. The actual count appears to be irrelevant and any 2D MS texture should bind to it
+#if defined(USE_TEXTURE2D_X_AS_ARRAY) && defined(UNITY_STEREO_INSTANCING_ENABLED)
+    #define TEXTURE2D_X_MSAA(type, textureName)                              Texture2DMSArray<type, 1> textureName
+    #define LOAD_TEXTURE2D_X_MSAA(textureName, unCoord2, sampleIndex)        LOAD_TEXTURE2D_ARRAY_MSAA(textureName, unCoord2, SLICE_ARRAY_INDEX, sampleIndex)
+#else
+    #define TEXTURE2D_X_MSAA(type, textureName)                              Texture2DMS<type, 1> textureName
+    #define LOAD_TEXTURE2D_X_MSAA                                            LOAD_TEXTURE2D_MSAA
 #endif
 
 // see Unity\Shaders\Includes\UnityShaderVariables.cginc for impl used by the C++ renderer
